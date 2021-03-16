@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Model
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory;
 
@@ -17,9 +18,8 @@ class User extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'username', 'email', 'password', 'activation_code', 'group_id'
     ];
-
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -28,4 +28,6 @@ class User extends Model
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
 }

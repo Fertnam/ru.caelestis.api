@@ -20,10 +20,10 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('activation_code');
-            $table->mediumInteger('balance');
-            $table->integer('xf_user_id');
+            $table->mediumInteger('balance')->default();
+            $table->integer('xf_user_id')->default();
             $table->unsignedBigInteger('group_id')->nullable(false);;
-            $table->string('ban_reason');
+            $table->string('ban_reason')->default();
             $table->rememberToken();
             $table->timestamps();
 
