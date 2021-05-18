@@ -7,6 +7,11 @@ use Illuminate\Foundation\Http\FormRequest;
 class RegisterFormRequest extends FormRequest
 {
     /**
+     * @var mixed
+     */
+    private $password;
+
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool

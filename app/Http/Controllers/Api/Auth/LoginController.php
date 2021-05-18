@@ -6,9 +6,16 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class LoginController extends Controller
 {
+
+    public $headers_for_forum = [
+        'XF-Api-Key' => 'i6R3z6e8k4wkpFyxHY9zxyQri_hlriSz',
+        'Content-Type' => 'application/x-www-form-urlencoded'
+    ];
+
     /**
      * Handle the incoming request.
      *
@@ -17,7 +24,7 @@ class LoginController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('username', 'password');
 
         if (!Auth::attempt($credentials)) {
             return response()->json([
@@ -25,6 +32,29 @@ class LoginController extends Controller
                 'errors' => 'Unauthorised'
             ], 401);
         }
+
+        $response = Http::withHeaders(
+            $this->headers_for_forum
+        )->asForm()
+            ->post('http://ru.caelestis.api/forum/api/auth/', [
+                'login' => $request->input('username'),
+                'password' => $request->input('password'),
+            ]);
+
+
+        $user_id = $response['user']['user_id'];
+
+        $response = Http::withHeaders(
+            $this->headers_for_forum
+        )->asForm()
+            ->post('http://ru.caelestis.api/forum/api/auth/login-token', [
+                'user_id' => $user_id,
+                'limit_ip' => '127.0.0.1',
+                'remember' => $request->remember_me
+            ])->json();
+
+
+
 
         $token = Auth::user()->createToken(config('app.name'));
 
@@ -37,7 +67,8 @@ class LoginController extends Controller
         return response()->json([
             'token_type' => 'Bearer',
             'token' => $token->accessToken,
-            'expires_at' => Carbon::parse($token->token->expires_at)->toDateTimeString()
+            'expires_at' => Carbon::parse($token->token->expires_at)->toDateTimeString(),
+            'forum' => $response
         ], 200);
     }
 }
