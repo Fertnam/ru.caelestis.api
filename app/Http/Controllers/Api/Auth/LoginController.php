@@ -24,7 +24,10 @@ class LoginController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $credentials = $request->only('username', 'password');
+
+        $name = $request->input('username') ? 'username' : 'email';
+
+        $credentials = $request->only($name, 'password');
 
         if (!Auth::attempt($credentials)) {
             return response()->json([
@@ -33,26 +36,26 @@ class LoginController extends Controller
             ], 401);
         }
 
-        $response = Http::withHeaders(
-            $this->headers_for_forum
-        )->asForm()
-            ->post('http://ru.caelestis.api/forum/api/auth/', [
-                'login' => $request->input('username'),
-                'password' => $request->input('password'),
-            ]);
-
-
-        $user_id = $response['user']['user_id'];
-
-        $response = Http::withHeaders(
-            $this->headers_for_forum
-        )->asForm()
-            ->post('http://ru.caelestis.api/forum/api/auth/login-token', [
-                'user_id' => $user_id,
-                'limit_ip' => '127.0.0.1',
-                'remember' => $request->remember_me
-            ])->json();
-
+//        $response = Http::withHeaders(
+//            $this->headers_for_forum
+//        )->asForm()
+//            ->post('http://ru.caelestis.api/forum/api/auth/', [
+//                'login' => $request->input('username'),
+//                'password' => $request->input('password'),
+//            ]);
+//
+//
+//        $user_id = $response['user']['user_id'];
+//
+//        $response = Http::withHeaders(
+//            $this->headers_for_forum
+//        )->asForm()
+//            ->post('http://ru.caelestis.api/forum/api/auth/login-token', [
+//                'user_id' => $user_id,
+//                'limit_ip' => '127.0.0.1',
+//                'remember' => $request->remember_me
+//            ])->json();
+//
 
 
 
@@ -68,7 +71,7 @@ class LoginController extends Controller
             'token_type' => 'Bearer',
             'token' => $token->accessToken,
             'expires_at' => Carbon::parse($token->token->expires_at)->toDateTimeString(),
-            'forum' => $response
+//            'forum' => $response
         ], 200);
     }
 }
