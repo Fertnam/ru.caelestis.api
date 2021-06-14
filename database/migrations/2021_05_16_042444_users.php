@@ -27,7 +27,7 @@ class Users extends Migration
             $table->rememberToken();
             $table->timestamps();
 
-            $table->foreign('cs_group_id')->references('id')->on('cs_group');
+//            $table->foreign('cs_group_id')->references('id')->on('cs_group');
         });
     }
     /**
