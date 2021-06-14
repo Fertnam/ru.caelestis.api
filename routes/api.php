@@ -24,5 +24,5 @@ Route::middleware('auth:api')
 
 Route::post('register', RegisterController::class);
 Route::post('login', LoginController::class);
-Route::post('logout', LogoutController::class)->middleware('auth:api');
-
+Route::post('logout', LogoutController::class)
+    ->middleware('auth:api');

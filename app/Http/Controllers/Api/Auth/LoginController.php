@@ -6,15 +6,14 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 
 class LoginController extends Controller
 {
 
-    public $headers_for_forum = [
-        'XF-Api-Key' => 'i6R3z6e8k4wkpFyxHY9zxyQri_hlriSz',
-        'Content-Type' => 'application/x-www-form-urlencoded'
-    ];
+//    public $headers_for_forum = [
+//        'XF-Api-Key' => 'i6R3z6e8k4wkpFyxHY9zxyQri_hlriSz',
+//        'Content-Type' => 'application/x-www-form-urlencoded'
+//    ];
 
     /**
      * Handle the incoming request.
@@ -25,13 +24,13 @@ class LoginController extends Controller
     public function __invoke(Request $request)
     {
 
-        $name = $request->input('username') ? 'username' : 'email';
+        $name = $request->has('username') ? 'username' : 'email';
 
         $credentials = $request->only($name, 'password');
 
         if (!Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'You cannot sign with those credentials',
+                'message' => 'Неверный логин или пароль',
                 'errors' => 'Unauthorised'
             ], 401);
         }
@@ -71,7 +70,6 @@ class LoginController extends Controller
             'token_type' => 'Bearer',
             'token' => $token->accessToken,
             'expires_at' => Carbon::parse($token->token->expires_at)->toDateTimeString(),
-//            'forum' => $response
         ], 200);
     }
 }

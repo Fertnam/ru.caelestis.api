@@ -11,6 +11,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'cs_users';
+
     protected $fillable = [
         'username', 'email', 'password', 'activation_code', 'cs_group_id, xf_user_id'
     ];

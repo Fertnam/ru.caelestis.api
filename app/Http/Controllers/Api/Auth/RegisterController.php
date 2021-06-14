@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Auth\RegisterFormRequest;
+use App\Mail\RegisterUser;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class RegisterController extends Controller
@@ -18,10 +19,10 @@ class RegisterController extends Controller
      */
     public function __invoke(RegisterFormRequest $request)
     {
-
         $response_forum = Http::withHeaders([
-            'XF-Api-Key' => 'i6R3z6e8k4wkpFyxHY9zxyQri_hlriSz',
-            'Content-Type' => 'application/x-www-form-urlencoded'
+            'XF-Api-Key' => getenv('XF_API_KEY'),
+            'Content-Type' => 'application/x-www-form-urlencoded',
+            'XF-Api-User' => 1
         ])->asForm()
             ->post('http://ru.caelestis.api/forum/api/users/', [
                 'username' => $request->input('username'),
@@ -29,7 +30,6 @@ class RegisterController extends Controller
                 'password' => $request->input('password'),
                 'api_bypass_permissions' => 1
             ]);
-
 
         $user = new User;
 
@@ -42,14 +42,15 @@ class RegisterController extends Controller
 
         $user->save();
 
-
-
-
-
-
+        Mail::to($request->input('email'))->send(
+            new RegisterUser(
+                $request->input('username'),
+                $user->activation_code
+            )
+        );
 
         return response()->json([
-            'message' => 'You were successfully registered. Use your email and password to sign in.',
+            'message' => 'Вы успешно зарегистрировались. Используйте свой email и пароль чтобы войти.',
             'forum' => $response_forum['user']['user_id'],
         ], 200);
 

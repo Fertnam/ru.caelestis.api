@@ -16,6 +16,16 @@ return function($__templater, $__selectedNav, array $__vars)
 		$__flat['_default'] =& $__tree['_default'];
 		if (empty($__tree['_default']['children'])) { $__tree['_default']['children'] = []; }
 
+		$__navTemp = [
+		'title' => \XF::phrase('nav.defaultLatestActivity'),
+		'href' => $__templater->func('link', array('whats-new/latest-activity', ), false),
+		'attributes' => [],
+	];
+		if ($__navTemp) {
+			$__tree['_default']['children']['defaultLatestActivity'] = $__navTemp;
+			$__flat['defaultLatestActivity'] =& $__tree['_default']['children']['defaultLatestActivity'];
+		}
+
 		if ($__vars['xf']['visitor']['user_id']) {
 			$__navTemp = [
 		'title' => \XF::phrase('nav.defaultNewsFeed'),
@@ -26,16 +36,6 @@ return function($__templater, $__selectedNav, array $__vars)
 				$__tree['_default']['children']['defaultNewsFeed'] = $__navTemp;
 				$__flat['defaultNewsFeed'] =& $__tree['_default']['children']['defaultNewsFeed'];
 			}
-		}
-
-		$__navTemp = [
-		'title' => \XF::phrase('nav.defaultLatestActivity'),
-		'href' => $__templater->func('link', array('whats-new/latest-activity', ), false),
-		'attributes' => [],
-	];
-		if ($__navTemp) {
-			$__tree['_default']['children']['defaultLatestActivity'] = $__navTemp;
-			$__flat['defaultLatestActivity'] =& $__tree['_default']['children']['defaultLatestActivity'];
 		}
 
 		if ($__vars['xf']['visitor']['user_id']) {

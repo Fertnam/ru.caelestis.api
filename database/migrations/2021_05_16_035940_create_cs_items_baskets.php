@@ -35,6 +35,6 @@ class CreateCsItemsBaskets extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cs_items_basket');
+        Schema::dropIfExists('cs_items_baskets');
     }
 }

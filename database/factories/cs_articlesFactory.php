@@ -2,7 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\articles;
+use App\Models\Article;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class cs_articlesFactory extends Factory
@@ -12,7 +13,7 @@ class cs_articlesFactory extends Factory
      *
      * @var string
      */
-    protected $model = articles::class;
+    protected $model = Article::class;
 
     /**
      * Define the model's default state.

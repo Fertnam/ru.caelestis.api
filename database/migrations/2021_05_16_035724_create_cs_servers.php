@@ -29,6 +29,6 @@ class CreateCsServers extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cs_server');
+        Schema::dropIfExists('cs_servers');
     }
 }

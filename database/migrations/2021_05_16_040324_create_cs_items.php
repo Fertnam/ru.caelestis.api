@@ -28,6 +28,6 @@ class CreateCsItems extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cs_item');
+        Schema::dropIfExists('cs_items');
     }
 }

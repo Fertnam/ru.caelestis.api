@@ -13,7 +13,7 @@ class CreateCsArticlesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cs_article', function (Blueprint $table) {
+        Schema::create('cs_articles', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('cs_user_id')->nullable(false);
             $table->string('title');

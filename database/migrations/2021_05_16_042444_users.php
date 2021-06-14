@@ -13,24 +13,23 @@ class Users extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('cs_users', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
+            $table->string('username')->unique()->nullable(false);;
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('activation_code')->unique();;
+            $table->dateTime('email_verified_at')->nullable();
+            $table->string('password')->nullable(false);
+            $table->string('activation_code')->unique();
             $table->mediumInteger('balance')->nullable();
-            $table->integer('xf_user_id')->nullable();
-            $table->unsignedBigInteger('cs_group_id')->nullable(false);;
+            $table->integer('xf_user_id')->nullable(false);
+            $table->unsignedBigInteger('cs_group_id')->nullable(false);
             $table->string('ban_reason')->nullable();
             $table->rememberToken();
             $table->timestamps();
 
-//            $table->foreign('cs_group_id')->references('id')->on('cs_group');
+            $table->foreign('cs_group_id')->references('id')->on('cs_group');
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -38,6 +37,6 @@ class Users extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cs_user');
+        Schema::dropIfExists('users');
     }
 }
