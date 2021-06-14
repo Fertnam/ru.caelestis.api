@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\Auth\RegisterController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,9 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')
-    ->get('/user', function (Request $request) {
-        return $request->user();
-    });
+    ->get('/user', [UserController::class, 'index']);
 
 Route::post('register', RegisterController::class);
 Route::post('login', LoginController::class);
