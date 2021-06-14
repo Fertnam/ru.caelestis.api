@@ -9,12 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-
-//    public $headers_for_forum = [
-//        'XF-Api-Key' => 'i6R3z6e8k4wkpFyxHY9zxyQri_hlriSz',
-//        'Content-Type' => 'application/x-www-form-urlencoded'
-//    ];
-
     /**
      * Handle the incoming request.
      *
@@ -24,9 +18,12 @@ class LoginController extends Controller
     public function __invoke(Request $request)
     {
 
-        $name = $request->has('username') ? 'username' : 'email';
+        $login = $request->input('username');
 
-        $credentials = $request->only($name, 'password');
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email':'username';
+        $request->merge([$field => $login]);
+
+        $credentials = $request->only($field, 'password');
 
         if (!Auth::attempt($credentials)) {
             return response()->json([
@@ -34,28 +31,6 @@ class LoginController extends Controller
                 'errors' => 'Unauthorised'
             ], 401);
         }
-
-//        $response = Http::withHeaders(
-//            $this->headers_for_forum
-//        )->asForm()
-//            ->post('http://ru.caelestis.api/forum/api/auth/', [
-//                'login' => $request->input('username'),
-//                'password' => $request->input('password'),
-//            ]);
-//
-//
-//        $user_id = $response['user']['user_id'];
-//
-//        $response = Http::withHeaders(
-//            $this->headers_for_forum
-//        )->asForm()
-//            ->post('http://ru.caelestis.api/forum/api/auth/login-token', [
-//                'user_id' => $user_id,
-//                'limit_ip' => '127.0.0.1',
-//                'remember' => $request->remember_me
-//            ])->json();
-//
-
 
 
         $token = Auth::user()->createToken(config('app.name'));
