@@ -20,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')
     ->get('/user', [UserController::class, 'index']);
 
+Route::middleware('auth:api')
+    ->put('/changePassword', [UserController::class, 'changePassword']);
+
 Route::post('register', RegisterController::class);
 Route::post('login', LoginController::class);
 Route::post('logout', LogoutController::class)
