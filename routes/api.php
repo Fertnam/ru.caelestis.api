@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ImageUploadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,13 +18,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')
-    ->get('/user', [UserController::class, 'index']);
-
-Route::middleware('auth:api')
-    ->put('/changePassword', [UserController::class, 'changePassword']);
-
 Route::post('register', RegisterController::class);
 Route::post('login', LoginController::class);
-Route::post('logout', LogoutController::class)
-    ->middleware('auth:api');
+
+Route::middleware('auth:api')->group(function () {
+    Route::group(['prefix' => 'upload'], function () {
+        Route::post('/skin', [ImageUploadController::class, 'uploadSkin']);
+        Route::post('/cloak', [ImageUploadController::class, 'uploadCloak']);
+    });
+
+    Route::get('/user', [UserController::class, 'index']);
+    Route::put('/changePassword', [UserController::class, 'changePassword']);
+
+    Route::post('logout', LogoutController::class);
+});
