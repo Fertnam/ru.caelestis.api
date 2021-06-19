@@ -53,11 +53,3 @@ $response = tap($kernel->handle(
 ))->send();
 
 $kernel->terminate($request, $response);
-
-?>
-
-    <script async type="text/javascript">
-        document.write('<script type="text/javascript" src="https://intellectmoney.ru/payform.js?bankcard=on&user_email=on&open_in_new_window=on&writer=now&serviceName=%20%D0%9F%D0%BE%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5%20%D1%81%D1%87%D0%B5%D1%82%D0%B0&serviceName_tip=&UserFieldName_1=&UserFieldName_1_tip=&default_sum=100.00&comment_tip=&successUrl=http%3A%2F%2Fcaelestis.ru&inn=870901737607&btn_name=pay&eshopId=459474"><\/script>');
-    </script>
-
-<?php
