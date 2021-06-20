@@ -21,7 +21,7 @@ class ImageUploadController extends Controller
 
     public function uploadSkin(Request $request) {
 
-        $this->upload($request, 'image/skins');
+        $this->upload($request, 'cabinet/skins');
 
         return response()->json([
             'message' => 'Скин успешно загружен',
@@ -30,7 +30,7 @@ class ImageUploadController extends Controller
 
     public function uploadCloak(Request $request) {
 
-        $this->upload($request, 'image/cloaks');
+        $this->upload($request, 'cabinet/capes');
 
         return response()->json([
             'message' => 'Плащ успешно загружен',

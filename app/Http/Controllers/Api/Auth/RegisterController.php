@@ -21,7 +21,7 @@ class RegisterController extends Controller
      */
     public function __invoke(RegisterFormRequest $request)
     {
-        $response_forum = $this->registerInFourum($request);
+        $response_forum = $this->registerInForum($request);
 
         DB::beginTransaction();
 
@@ -59,15 +59,15 @@ class RegisterController extends Controller
         }
     }
 
-    public function registerInFourum(Request $request){
+    public function registerInForum(Request $request){
 
         try {
             $response_forum = Http::withHeaders([
-                'XF-Api-Key' => getenv('XF_API_KEY'),
+                'XF-Api-Key' => $_ENV['XF_API_KEY'],
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'XF-Api-User' => 1
             ])->asForm()
-                ->post(getenv('FORUM_PATH') . '/api/users/',
+                ->post($_ENV['FORUM_PATH'] . '/api/users/',
                     [
                         'username' => $request->input('username'),
                         'email' => $request->input('email'),

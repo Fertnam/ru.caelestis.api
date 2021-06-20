@@ -71,4 +71,38 @@ class UserController extends Controller
         ]);
 
     }
+
+    public function activate(Request $request) {
+
+        $code = $request->get('activation_code');
+
+        $user = User::query()
+            ->where('activation_code', 'like', $code)
+            ->get();
+
+        dd($user);
+
+        if (empty($user)) {
+            throw new \Exception('Forbidden', 403);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $user->update([
+                'activation_code' => null,
+            ]);
+
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            throw new \Exception($exception->getMessage(), 500);
+        }
+
+        return response()->json([
+            'message' => 'Аккаунт был успешно активирован',
+        ]);
+
+
+    }
 }

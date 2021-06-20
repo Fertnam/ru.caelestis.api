@@ -6,6 +6,9 @@ use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ImageUploadController;
+use App\Mail\RegisterUser;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,10 +21,21 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::post('mail', function () {
+    Mail::to('fertnam@mail.ru')->send(new RegisterUser(
+        'qweq',
+        '234'
+    ));
+    Mail::to('edik180496@gmail.com')->send(new RegisterUser(
+        'qweq',
+        '234'
+    ));
+});
 
 Route::post('register', RegisterController::class);
 Route::post('login', LoginController::class);
 Route::post('payment', [PaymentController::class, 'result']);
+Route::put('activate', [UserController::class, 'activate']);
 
 Route::middleware('auth:api')->group(function () {
     Route::group(['prefix' => 'upload'], function () {

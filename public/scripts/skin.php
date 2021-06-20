@@ -1,9 +1,9 @@
 <?php
 // Функции с плащами пока вырезаны
 $skin = array(
-    'dir_skins' => $_SERVER['DOCUMENT_ROOT'] . '/image/skins/', // Путь до папки скинов от текущего каталога
-    'dir_cloaks' => '../image/cloaks/', // Путь до папки плащей от текущего каталога
-    'default' => 'default-skin', // Дефолтный скин
+    'dir_skins' => $_SERVER['DOCUMENT_ROOT'] . '/cabinet/skins/', // Путь до папки скинов от текущего каталога
+    'dir_cloaks' => $_SERVER['DOCUMENT_ROOT'] . '/cabinet/capes/', // Путь до папки плащей от текущего каталога
+    'default' => '@default', // Дефолтный скин
     'user' => filter_input(INPUT_GET,'user',FILTER_SANITIZE_FULL_SPECIAL_CHARS),
     'size' => filter_input(INPUT_GET,'size',FILTER_SANITIZE_NUMBER_FLOAT),
     'mode' => filter_input(INPUT_GET,'mode',FILTER_SANITIZE_NUMBER_FLOAT),
