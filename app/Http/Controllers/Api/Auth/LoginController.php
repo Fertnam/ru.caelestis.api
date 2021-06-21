@@ -32,14 +32,16 @@ class LoginController extends Controller
             ], 401);
         }
 
-        if (!empty(Auth::user()->activation_cod)) {
+        $user = Auth::user();
+
+        if (!empty($user->activation_code)) {
             return response()->json([
                 'message' => 'Аккаунт не активирован',
                 'errors' => 'Unauthorised'
             ], 401);
         }
 
-        $token = Auth::user()->createToken(config('app.name'));
+        $token = $user->createToken(config('app.name'));
 
         $token->token->expires_at = $request->remember_me ?
             Carbon::now()->addMonth() :
