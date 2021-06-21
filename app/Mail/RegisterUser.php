@@ -33,13 +33,12 @@ class RegisterUser extends Mailable
      */
     public function build()
     {
-        $link = $_ENV['APP_URL'] . '?activate_code=' . $this->activation_code;
+        $link = $_ENV['APP_URL'] . '/activation/' . $this->activation_code;
 
         return $this
             ->subject('Активация аккаунта')
             ->view('register_user', [
             'username' => $this->name,
-            'activation_code' => $this->activation_code,
             'link' => $link
             ]);
     }
