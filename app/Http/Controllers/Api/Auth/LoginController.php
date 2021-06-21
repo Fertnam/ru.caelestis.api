@@ -32,6 +32,12 @@ class LoginController extends Controller
             ], 401);
         }
 
+        if (!empty(Auth::user()->activation_cod)) {
+            return response()->json([
+                'message' => 'Аккаунт не активирован',
+                'errors' => 'Unauthorised'
+            ], 401);
+        }
 
         $token = Auth::user()->createToken(config('app.name'));
 

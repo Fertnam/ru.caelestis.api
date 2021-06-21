@@ -77,10 +77,9 @@ class UserController extends Controller
         $code = $request->get('activation_code');
 
         $user = User::query()
-            ->where('activation_code', 'like', $code)
-            ->get();
+            ->where('activation_code', $code)
+            ->first();
 
-        dd($user);
 
         if (empty($user)) {
             throw new \Exception('Forbidden', 403);

@@ -21,17 +21,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('mail', function () {
-    Mail::to('fertnam@mail.ru')->send(new RegisterUser(
-        'qweq',
-        '234'
-    ));
-    Mail::to('edik180496@gmail.com')->send(new RegisterUser(
-        'qweq',
-        '234'
-    ));
-});
-
 Route::post('register', RegisterController::class);
 Route::post('login', LoginController::class);
 Route::post('payment', [PaymentController::class, 'result']);
