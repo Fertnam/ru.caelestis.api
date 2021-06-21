@@ -72,6 +72,7 @@ class RegisterController extends Controller
                         'username' => $request->input('username'),
                         'email' => $request->input('email'),
                         'password' => $request->input('password'),
+                        'user_state' => 'moderated',
                         'api_bypass_permissions' => 1
                     ]);
 

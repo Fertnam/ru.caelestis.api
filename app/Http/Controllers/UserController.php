@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
@@ -91,6 +92,16 @@ class UserController extends Controller
             $user->update([
                 'activation_code' => null,
             ]);
+
+            $response_forum = Http::withHeaders([
+                'XF-Api-Key' => $_ENV['XF_API_KEY'],
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'XF-Api-User' => 1
+            ])->asForm()
+                ->post($_ENV['FORUM_PATH'] . '/api/users/' . $user->xf_user_id,
+                    [
+                        'user_state' => 'valid',
+                    ]);
 
             DB::commit();
         } catch (\Exception $exception) {
