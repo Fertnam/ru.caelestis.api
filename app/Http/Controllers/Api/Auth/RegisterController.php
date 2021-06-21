@@ -21,11 +21,12 @@ class RegisterController extends Controller
      */
     public function __invoke(RegisterFormRequest $request)
     {
-        $response_forum = $this->registerInForum($request);
 
-        DB::beginTransaction();
 
         try {
+            $response_forum = $this->registerInForum($request);
+
+            DB::beginTransaction();
 
             $user = new User;
 
@@ -55,32 +56,30 @@ class RegisterController extends Controller
         }catch (\Exception $e) {
             DB::rollBack();
 
-            var_dump($e->getMessage());
+            return response()->json([
+                'message' => $e->getMessage(),
+                'error' => 'Server Error'
+                ], 500);
         }
     }
 
     public function registerInForum(Request $request){
 
-        try {
-            $response_forum = Http::withHeaders([
-                'XF-Api-Key' => $_ENV['XF_API_KEY'],
-                'Content-Type' => 'application/x-www-form-urlencoded',
-                'XF-Api-User' => 1
-            ])->asForm()
-                ->post($_ENV['FORUM_PATH'] . '/api/users/',
-                    [
-                        'username' => $request->input('username'),
-                        'email' => $request->input('email'),
-                        'password' => $request->input('password'),
-                        'user_state' => 'moderated',
-                        'api_bypass_permissions' => 1
-                    ]);
+        $response_forum = Http::withHeaders([
+            'XF-Api-Key' => $_ENV['XF_API_KEY'],
+            'Content-Type' => 'application/x-www-form-urlencoded',
+            'XF-Api-User' => 1
+        ])->asForm()
+            ->post($_ENV['FORUM_PATH'] . '/api/users/',
+                [
+                    'username' => $request->input('username'),
+                    'email' => $request->input('email'),
+                    'password' => $request->input('password'),
+                    'user_state' => 'moderated',
+                    'api_bypass_permissions' => 1
+                ]);
 
-            return $response_forum;
-        } catch (\Exception $e) {
-            var_dump($e->getMessage());
-        }
-
+        return $response_forum;
     }
 
 }
