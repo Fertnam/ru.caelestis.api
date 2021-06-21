@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+
+    private $key = 'wjGXZ}g^]dyL8[AZUtvunw=je$xwz$lw>v!keUrZuzJmY}ZTyzgwm5xJVQ/i#(y]';
+
     /**
      * Handle the incoming request.
      *
@@ -54,5 +57,36 @@ class LoginController extends Controller
             'token' => $token->accessToken,
             'expires_at' => Carbon::parse($token->token->expires_at)->toDateTimeString(),
         ], 200);
+    }
+
+    public function authOnLauncher(Request $request) {
+
+        $login = $request->input('username');
+        $key = $request->get('key');
+
+        if (strcmp($key, $this->key) !== 0) {
+            return response('Ошибка авторизации, пожалуйста свяжитесь с Администрацией!', 500)
+                ->header('Content-Type', 'text/plain');
+        }
+
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email':'username';
+        $request->merge([$field => $login]);
+
+        $credentials = $request->only($field, 'password');
+
+        if (!Auth::attempt($credentials)) {
+            return response('Неверный логин или пароль', 401)
+                ->header('Content-Type', 'text/plain');
+        }
+
+        $user = Auth::user();
+
+        if (!empty($user->activation_code)) {
+            return response('Аккаунт не активирован', 401)
+                ->header('Content-Type', 'text/plain');
+        }
+
+        return response("OK:{$user->username}")
+            ->header('Content-Type', 'text/plain');
     }
 }
